@@ -1,0 +1,19 @@
+.App {
+  margin:0 auto;
+  max-width: 800px;
+  .image-wrap{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    figure{
+      &.active{
+        img{
+          border: 2px solid green;
+        }
+      }
+      img{
+        max-width:100%;
+      }
+    }
+  }
+}
+

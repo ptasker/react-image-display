@@ -1,23 +1,62 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState} from "react";
+import "./App.scss";
 
 function App() {
+  const [sidebarShowing, setSideBarShowing] = useState(false);
+  const [images, setImages] = useState([]);
+  const [imagesSelected, setImagesSelected] = useState([]);
+
+  const getImages = async () => {
+    const res = await fetch("https://picsum.photos/v2/list");
+
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+
+    const result = await res.json();
+    setImages(result);
+  };
+
+  const imageSelected = (id) => {
+    const copiedImages = [...imagesSelected]
+
+    if (!imagesSelected.includes(id)) {
+      copiedImages.push(id);
+    }else{
+      const index = copiedImages.indexOf(id);
+      copiedImages.splice(index, 1)
+    }
+
+    setImagesSelected(copiedImages);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header>
+        <h1>App Header</h1>
       </header>
+      <section>
+        {sidebarShowing && (
+          <aside>
+            <button onClick={getImages}>Load images</button>
+          </aside>
+        )}
+        <div className="body">
+          <button onClick={() => setSideBarShowing(!sidebarShowing)}>
+            Show sidebar
+          </button>
+          <h2>Images</h2>
+          <div className="image-wrap">
+            {images.map((item, index) => {
+              return (
+                <figure key={index} onClick={() => imageSelected(item.id)} className={imagesSelected.includes(item.id) ? 'active' : ''}>
+                  <img src={item.download_url} crossOrigin="anonymous" alt={`${item.author}`} />
+                </figure>
+              )
+            })}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
