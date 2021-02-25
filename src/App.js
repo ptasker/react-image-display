@@ -7,6 +7,10 @@ function App() {
   const [imagesSelected, setImagesSelected] = useState([]);
 
   const getImages = async () => {
+    if (images.length) {
+      return false;
+    }
+
     const res = await fetch("https://picsum.photos/v2/list");
 
     if (!res.ok) {
@@ -22,7 +26,7 @@ function App() {
 
     if (!imagesSelected.includes(id)) {
       copiedImages.push(id);
-    }else{
+    } else {
       const index = copiedImages.indexOf(id);
       copiedImages.splice(index, 1)
     }
@@ -51,6 +55,7 @@ function App() {
               return (
                 <figure key={index} onClick={() => imageSelected(item.id)} className={imagesSelected.includes(item.id) ? 'active' : ''}>
                   <img src={item.download_url} crossOrigin="anonymous" alt={`${item.author}`} />
+                  <p>{item.author}</p>
                 </figure>
               )
             })}
