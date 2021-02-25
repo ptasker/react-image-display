@@ -53,7 +53,7 @@ function App() {
           <div className="image-wrap">
             {images.map((item, index) => {
               return (
-                <figure key={index} onClick={() => imageSelected(item.id)} className={imagesSelected.includes(item.id) ? 'active' : ''}>
+                <figure key={index} onClick={() => imageSelected(item.id)} className={imagesSelected.includes(item.id) ? 'active' : null}>
                   <img src={item.download_url} crossOrigin="anonymous" alt={`${item.author}`} />
                   <p>{item.author}</p>
                 </figure>
